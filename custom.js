@@ -174,7 +174,7 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 	doms = categories.map(function(cat,indx){
 		replacedCat = cat.replace(/ /g,'_')
 		listElem = document.createElement('li')
-		listElem.setAttribute("class",`${indx === 2 ? 'active': ''}`)
+		listElem.setAttribute("class",`${indx === 0 ? 'active': ''}`)
 
 		anchore = document.createElement('a')
 		anchore.setAttribute("class",`tabLink`)
@@ -200,7 +200,7 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 		isTeamsLengthMoreThan8 = filteredTeams.length > 8
 
 		tabPan = document.createElement('div')
-			tabPan.setAttribute("class",`tab-pane ease ${isTeamsLengthMoreThan8 ? 'sliderParent' : ''} ${indx === 2 ? 'appear active' : ''}`)
+			tabPan.setAttribute("class",`tab-pane ease ${isTeamsLengthMoreThan8 ? 'sliderParent' : ''} ${indx === 0 ? 'appear active' : ''}`)
 			tabPan.setAttribute("id",`nav-${replacedCat}`)
 
 		rowElem = document.createElement('div')
@@ -210,30 +210,30 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 				}
 
 		filteredTeams.map(function(team){
-				imgElem = document.createElement('img')
-				imgElem.setAttribute("src",team.image)
-				imgElem.setAttribute("class",`echo-team-img`)
-				imgElem.setAttribute("alt",team.name)
-				imgElem.style.width = '159px'
-				imgElem.style.height = '159px'
+			imgElem = document.createElement('img')
+			imgElem.setAttribute("src",team.image)
+			imgElem.setAttribute("class",`echo-team-img`)
+			imgElem.setAttribute("alt",team.name)
+			imgElem.style.width = '159px'
+			imgElem.style.height = '159px'
 
-				h3Elem = document.createElement('h3')
-				h3Elem.setAttribute("class",`echo-team-name`)
-				h3Elem.innerText = team.name
+			h3Elem = document.createElement('h3')
+			h3Elem.setAttribute("class",`echo-team-name`)
+			h3Elem.innerText = team.name
 
-				pElem = document.createElement('p')
-				pElem.setAttribute("class",`echo-team-designation`)
-				pElem.innerText = team.designation
+			pElem = document.createElement('p')
+			pElem.setAttribute("class",`echo-team-designation`)
+			pElem.innerText = team.designation
 
-				teamShort = document.createElement('div')
-				teamShort.setAttribute("class",`grid-item`)
+			teamShort = document.createElement('div')
+			teamShort.setAttribute("class",`grid-item`)
 
-				teamShort.appendChild(imgElem)
-				teamShort.appendChild(h3Elem)
-				teamShort.appendChild(pElem)
+			teamShort.appendChild(imgElem)
+			teamShort.appendChild(h3Elem)
+			teamShort.appendChild(pElem)
 
-				rowElem.appendChild(teamShort)
-			})
+			rowElem.appendChild(teamShort)
+		})
 		tabPan.appendChild(rowElem)
 		tabContent.appendChild(tabPan)
 	})
@@ -261,9 +261,6 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 		activePane = document.querySelector(activePaneId);
 		activePane.classList.add("active");
 		activePane.classList.add("appear");
-	}
-	for (i = 0; i < tabList.length; i++) {
-		tabList[i].addEventListener("click", myTabClicks)
 	}
 	
 	//--------------------- Slider Code ---------------------
@@ -313,7 +310,6 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 	carousel = document.querySelector('.sliderParent');
 	carouselContent = document.querySelector('.teamSlider');
 	slides = document.querySelectorAll('.teamSlider>.grids');
-	teamSlider.setAttribute('style', `height:${slides[0].offsetHeight}px`)
 	arrayOfSlides = Array.prototype.slice.call(slides);
 	var carouselDisplaying;
 	var screenSize;
@@ -340,7 +336,6 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 
 		slidesArray.forEach(function(el, i){
 			el.style.left = width + "px";
-			el.style.position = "absolute";
 			width += lengthOfSlide;
 		});
 		addClone();
@@ -356,7 +351,6 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 		slidesArray.forEach(function(el, i){
 			maxWidth -= lengthOfSlide;
 			el.style.left = maxWidth + "px";
-			el.style.position = "absolute";
 		});
 	}
 	
@@ -409,8 +403,6 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 		}
 	}
 
-	rightNav = document.querySelector('.prev-arrow');
-	rightNav.addEventListener('click', moveRight);
 	moveSlidesRight()
 	moveLeft()
 
@@ -427,10 +419,20 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 		}
 	}
 
+	rightNav = document.querySelector('.prev-arrow');
 	leftNav = document.querySelector('.next-arrow');
+
+	rightNav.addEventListener('click', moveRight);
 	leftNav.addEventListener('click', moveLeft);
 
+	for (i = 0; i < tabList.length; i++) {
+		tabList[i].addEventListener("click", myTabClicks)
+		activateAgain()
+	}
 
 	teamSection.remove()
 	window.newTeamMembers = teams
+
+
+	
 	
