@@ -411,6 +411,8 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 
 	rightNav = document.querySelector('.prev-arrow');
 	rightNav.addEventListener('click', moveRight);
+	moveSlidesRight()
+	moveLeft()
 
 	function moveRight() {
 		if ( moving ) {
@@ -428,8 +430,6 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 	leftNav = document.querySelector('.next-arrow');
 	leftNav.addEventListener('click', moveLeft);
 
-	moveSlidesRight()
-	moveLeft()
 
 	teamSection.remove()
 	window.newTeamMembers = teams
