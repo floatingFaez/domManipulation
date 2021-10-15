@@ -432,7 +432,3 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 
 	teamSection.remove()
 	window.newTeamMembers = teams
-
-
-	
-	
