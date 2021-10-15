@@ -174,7 +174,7 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 	doms = categories.map(function(cat,indx){
 		replacedCat = cat.replace(/ /g,'_')
 		listElem = document.createElement('li')
-		listElem.setAttribute("class",`${indx === 0 ? 'active': ''}`)
+		listElem.setAttribute("class",`${indx === 2 ? 'active': ''}`)
 
 		anchore = document.createElement('a')
 		anchore.setAttribute("class",`tabLink`)
@@ -200,7 +200,7 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 		isTeamsLengthMoreThan8 = filteredTeams.length > 8
 
 		tabPan = document.createElement('div')
-			tabPan.setAttribute("class",`tab-pane ease ${isTeamsLengthMoreThan8 ? 'sliderParent' : ''} ${indx === 0 ? 'appear active' : ''}`)
+			tabPan.setAttribute("class",`tab-pane ease ${isTeamsLengthMoreThan8 ? 'sliderParent' : ''} ${indx === 2 ? 'appear active' : ''}`)
 			tabPan.setAttribute("id",`nav-${replacedCat}`)
 
 		rowElem = document.createElement('div')
