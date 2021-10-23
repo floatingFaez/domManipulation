@@ -1,4 +1,5 @@
 
+
 const style = document.createElement("style")
 style.textContent = `
 	.sliderParent{position:relative}
@@ -94,55 +95,72 @@ style.textContent = `
 		min-width: 100%;
 		transition: left .4s cubic-bezier(.47,.13,.15,.89);
 	}
+	.echo-team-img {
+		width: 159px;
+		height: 159px;
+		border-radius: 100%;
+	}
 	
 `
-document.head.appendChild(style)
+	document.head.appendChild(style)
 
-teamWrapper = document.getElementsByClassName('section-meet-the-team')
-teamWrapper[0].classList.add('teams')
-teamWrapper[0].setAttribute('id','teamSection')
+	teamWrapper = document.getElementsByClassName('section-meet-the-team')
+	teamWrapper[0].classList.add('teams')
+	teamWrapper[0].setAttribute('id','teamSection')
 
-conteiner = document.getElementsByClassName('teams')[0].getElementsByClassName('container')[0]
-teamSection = document.getElementsByClassName('teams')[0].getElementsByClassName('row')[0]
+	conteiner = document.getElementsByClassName('teams')[0].getElementsByClassName('container')[0]
+	teamSection = document.getElementsByClassName('teams')[0].getElementsByClassName('row')[0]
 
-loadMoreBtn = document.getElementsByClassName('team-load-more')[0]
-loadMoreBtn.click()
+	loadMoreBtn = document.getElementsByClassName('team-load-more')[0]
+	loadMoreBtn.click()
 
-document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
+	document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 
 	teams = []
 	newMembers = document.getElementsByClassName('teams')[0].getElementsByClassName('row')[0].getElementsByClassName('echo-team-short')
 
-	for(i = 0;i < newMembers.length;i++){
-		designation = newMembers[i].getElementsByClassName('echo-team-designation')[0].innerText
-		
-		priority = 0
+	function getPriority(designation){
 		if(
 			(designation.indexOf('Software Engineer') !== -1 && designation.indexOf('Lead') !== -1) ||
 			(designation.indexOf('QA') !== -1 && designation.indexOf('Senior') !== -1)
 		){
-			priority = 1
+			return 1
 		}else if(
-			(designation.indexOf('Software Engineer') !== -1 && designation.indexOf('Senior') !== -1) ||
+			(designation.indexOf('Software Engineer') !== -1 && designation.indexOf('Senior') !== -1 && designation.indexOf('SR.') !== -1) ||
 			(designation.indexOf('QA') !== -1 && designation.indexOf('Software') !== -1)
 		){
-			priority = 2
+			return 2
 		}else if(
 			(designation.indexOf('Software Engineer') !== -1 ) ||
 			(designation.indexOf('QA') !== -1)
 		){
-			priority = 3
+			return 3
 		}else{
-			priority = 0
+			return 0
 		}
-		
+	}
+
+	for(i = 0;i < newMembers.length;i++){
+		designation = newMembers[i].getElementsByClassName('echo-team-designation')[0].innerText
 		teams.push({
 			designation,
 			image:newMembers[i].querySelector('img').getAttribute('src'),
 			name:newMembers[i].getElementsByClassName('echo-team-name')[0].innerText,
-			priority
+			priority: getPriority(designation)
 		})
 	}
+
+	for (const [key, member] of Object.entries(window.newTeamMembers)) {
+		teams.push({
+			designation:member.designation,
+			image:member.image,
+			name:member.name,
+			priority: getPriority(member.designation)
+		})
+		
+	}
+
+	//----------------- Nav Tabs
 
 	categories = ['Management','Finance','Software Engineer','QA','Others']
 
@@ -170,6 +188,8 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 			tabList.setAttribute("class","tabList")
 			tabList.setAttribute("id","tabList")
 			tabList.setAttribute("role","tabList")
+	
+	
 
 	doms = categories.map(function(cat,indx){
 		replacedCat = cat.replace(/ /g,'_')
@@ -244,6 +264,7 @@ document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 	//--------------------- Tabs Code ---------------------
 
 	tabList = document.querySelectorAll("ul.tabList > li");
+
 	function myTabClicks(tabClickEvent) {
 		for ( i = 0; i < tabList.length; i++) {
 			tabList[i].classList.remove("active");
