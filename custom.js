@@ -131,7 +131,7 @@ style.textContent = `
 		){
 			return 1
 		}else if(
-			(designation.indexOf('Software Engineer') !== -1 && designation.indexOf('Senior') !== -1 && designation.indexOf('SR.') !== -1) ||
+			(designation.indexOf('Software Engineer') !== -1 && (designation.indexOf('Senior') !== -1 || designation.indexOf('SR.') !== -1)) ||
 			(designation.indexOf('QA') !== -1 && designation.indexOf('Software') !== -1)
 		){
 			return 2
