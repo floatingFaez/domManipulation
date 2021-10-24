@@ -1,5 +1,3 @@
-
-
 const style = document.createElement("style")
 style.textContent = `
 	.sliderParent{position:relative}
@@ -102,22 +100,29 @@ style.textContent = `
 	}
 	
 `
+	const moreInfo = {
+		backGround : `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
+		dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`,
+		likes : `Love to Play with Code`,
+		disLikes : `Same snack every day`,
+		skills : `Ninja in Reack`,
+	}
 	document.head.appendChild(style)
 
 	teamWrapper = document.getElementsByClassName('section-meet-the-team')
 	teamWrapper[0].classList.add('teams')
 	teamWrapper[0].setAttribute('id','teamSection')
+	
 
 	conteiner = document.getElementsByClassName('teams')[0].getElementsByClassName('container')[0]
 	teamSection = document.getElementsByClassName('teams')[0].getElementsByClassName('row')[0]
-
 	loadMoreBtn = document.getElementsByClassName('team-load-more')[0]
 	loadMoreBtn.click()
 
 	document.querySelector('#teamSection').scrollIntoView({behavior: 'smooth'});
 
 	teams = []
-	newMembers = document.getElementsByClassName('teams')[0].getElementsByClassName('row')[0].getElementsByClassName('echo-team-short')
+	newMembers = teamSection.getElementsByClassName('echo-team-short')
 
 	function getPriority(designation){
 		if(
@@ -142,20 +147,24 @@ style.textContent = `
 
 	for(i = 0;i < newMembers.length;i++){
 		designation = newMembers[i].getElementsByClassName('echo-team-designation')[0].innerText
+		dataId = newMembers[i].dataset.echoteamid
 		teams.push({
 			designation,
 			image:newMembers[i].querySelector('img').getAttribute('src'),
 			name:newMembers[i].getElementsByClassName('echo-team-name')[0].innerText,
-			priority: getPriority(designation)
+			priority: getPriority(designation),
+			dataId:parseInt(dataId)
 		})
 	}
 
 	for (const [key, member] of Object.entries(window.newTeamMembers)) {
+		const dataId = Math.floor(1000 + Math.random() * 9000);
 		teams.push({
 			designation:member.designation,
 			image:member.image,
 			name:member.name,
-			priority: getPriority(member.designation)
+			priority: getPriority(member.designation),
+			dataId,
 		})
 		
 	}
@@ -178,7 +187,7 @@ style.textContent = `
 		}
 	})
 
-	// console.log(teams)
+	console.log(teams)
 
 	navElem = document.createElement('div')
 	navElem.setAttribute("class","tabBar")
@@ -213,6 +222,7 @@ style.textContent = `
 		tabContent.setAttribute("class","tab-content py-5")
 		tabContent.setAttribute("id","nav-tabContent")
 
+		
 	teamDoms = categories.map(function(cat,indx){
 		replacedCat = cat.replace(/ /g,'_')
 
@@ -228,31 +238,40 @@ style.textContent = `
 				if(isTeamsLengthMoreThan8){
 					rowElem.setAttribute("data-chunksize", 8)
 				}
-
+			
+		
 		filteredTeams.map(function(team){
-			imgElem = document.createElement('img')
-			imgElem.setAttribute("src",team.image)
-			imgElem.setAttribute("class",`echo-team-img`)
-			imgElem.setAttribute("alt",team.name)
-			imgElem.style.width = '159px'
-			imgElem.style.height = '159px'
+			let clonedItem = teamSection.children[0].cloneNode(true)
+			clonedItem.setAttribute('class','aos-init')
+			teamShot = clonedItem.querySelector('.echo-team-short')
+			teamShot.dataset.echoteamid = team.dataId
 
-			h3Elem = document.createElement('h3')
-			h3Elem.setAttribute("class",`echo-team-name`)
-			h3Elem.innerText = team.name
+			descriptionBox = clonedItem.querySelector('.echo-team-description-box')
+			indx = descriptionBox.getAttribute('id').lastIndexOf('_id_')
+			idName = descriptionBox.getAttribute('id').substr(0,indx+4) + team.dataId
+			descriptionBox.dataset.echoteamid = team.dataId
+			descriptionBox.setAttribute('id',idName)
+			
+			teamShot.querySelector('.echo-team-img').src = team.image
+			teamShot.querySelector('.echo-team-img').alt = team.name
+			teamShot.querySelector('.echo-team-name').textContent = team.name
+			teamShot.querySelector('.echo-team-designation').textContent = team.designation
 
-			pElem = document.createElement('p')
-			pElem.setAttribute("class",`echo-team-designation`)
-			pElem.innerText = team.designation
+			teamDesBox = clonedItem.querySelector('.echo-team-image-box')
+			teamDesBox.getElementsByTagName('img')[0].src = team.image
+			teamDesBox.getElementsByTagName('img')[0].alt = team.name
+			teamDesBox.querySelector('.echo-team-name-designation').querySelector('.echo-team-name').textContent = team.name
+			teamDesBox.querySelector('.echo-team-name-designation').querySelector('.echo-team-designation').textContent = team.designation
 
-			teamShort = document.createElement('div')
-			teamShort.setAttribute("class",`grid-item`)
+			clonedItem.querySelector('.echo-team-name').textContent = team.name
+			clonedItem.querySelector('.echo-team-designation').textContent = team.designation
+			clonedItem.querySelector('.echo-team-background').getElementsByTagName('p')[0].textContent = moreInfo.backGround
+			clonedItem.querySelector('.echo-team-likes').getElementsByTagName('p')[0].textContent = moreInfo.likes
+			clonedItem.querySelector('.echo-team-dislikes').getElementsByTagName('p')[0].textContent = moreInfo.disLikes
+			clonedItem.querySelector('.echo-team-special-skill').getElementsByTagName('p')[0].textContent = moreInfo.skills
 
-			teamShort.appendChild(imgElem)
-			teamShort.appendChild(h3Elem)
-			teamShort.appendChild(pElem)
 
-			rowElem.appendChild(teamShort)
+			rowElem.appendChild(clonedItem)
 		})
 		tabPan.appendChild(rowElem)
 		tabContent.appendChild(tabPan)
@@ -326,7 +345,7 @@ style.textContent = `
 	sliderParent.appendChild(rightArrow)
 
 
-	//------------------- Activate Carousel
+	// ------------------- Activate Carousel
 
 	carousel = document.querySelector('.sliderParent');
 	carouselContent = document.querySelector('.teamSlider');
@@ -452,4 +471,4 @@ style.textContent = `
 	}
 
 	teamSection.remove()
-	window.newTeamMembers = teams
+	// window.newTeamMembers = teams
